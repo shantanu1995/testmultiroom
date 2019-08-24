@@ -6,13 +6,6 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/DavidAFox/Chat/client"
-	"github.com/DavidAFox/Chat/clientdata"
-	"github.com/DavidAFox/Chat/clientdata/datafactory"
-	chathttp "github.com/DavidAFox/Chat/connections/http"
-	"github.com/DavidAFox/Chat/connections/telnet"
-	"github.com/DavidAFox/Chat/message"
-	"github.com/DavidAFox/Chat/room"
 	"io"
 	"log"
 	"net"
@@ -20,6 +13,14 @@ import (
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/shantanu1995/testmultiroom/client"
+	"github.com/shantanu1995/testmultiroom/clientdata"
+	"github.com/shantanu1995/testmultiroom/clientdata/datafactory"
+	chathttp "github.com/shantanu1995/testmultiroom/connections/http"
+	"github.com/shantanu1995/testmultiroom/connections/telnet"
+	"github.com/shantanu1995/testmultiroom/message"
+	"github.com/shantanu1995/testmultiroom/room"
 )
 
 //config stores the configuration data from the config file.

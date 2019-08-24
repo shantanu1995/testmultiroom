@@ -2,14 +2,15 @@ package http
 
 import (
 	"bytes"
-	"github.com/DavidAFox/Chat/client"
-	"github.com/DavidAFox/Chat/clientdata"
-	"github.com/DavidAFox/Chat/clientdata/filedata"
-	"github.com/DavidAFox/Chat/room"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
+
+	"github.com/shantanu1995/testmultiroom/client"
+	"github.com/shantanu1995/testmultiroom/clientdata"
+	"github.com/shantanu1995/testmultiroom/clientdata/filedata"
+	"github.com/shantanu1995/testmultiroom/room"
 )
 
 func TestServeHTTPHandlesCORSOptionsRequest(t *testing.T) {

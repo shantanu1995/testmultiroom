@@ -1,11 +1,12 @@
 package chattest
 
 import (
-	"github.com/DavidAFox/Chat/testclient"
-	"github.com/DavidAFox/gentest"
 	"io"
 	"os"
 	"testing"
+
+	"github.com/DavidAFox/gentest"
+	"github.com/shantanu1995/testmultiroom/testclient"
 )
 
 //Test represents a particular test.

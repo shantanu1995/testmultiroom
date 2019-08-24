@@ -5,15 +5,16 @@ Package telnet provides a connection implementation for use with the client pack
 */
 
 import (
-	"github.com/DavidAFox/Chat/client"
-	"github.com/DavidAFox/Chat/clientdata"
-	"github.com/DavidAFox/Chat/message"
-	"github.com/DavidAFox/Chat/room"
 	"io"
 	"log"
 	"net"
 	"regexp"
 	"strings"
+
+	"github.com/shantanu1995/testmultiroom/client"
+	"github.com/shantanu1995/testmultiroom/clientdata"
+	"github.com/shantanu1995/testmultiroom/message"
+	"github.com/shantanu1995/testmultiroom/room"
 )
 
 //Connection is used to connect the user to the server.
@@ -155,7 +156,7 @@ func TelnetLogin(conn net.Conn, rooms *room.RoomList, chl io.Writer, cd clientda
 				} else if rooms.GetClient(name) != nil {
 					io.WriteString(conn, "That user is already logged in.\n\r")
 					logged = false
-				} 
+				}
 			}
 		} else {
 			_, err = io.WriteString(conn, "Invalid name.  Name must be alphanumeric characters only.")

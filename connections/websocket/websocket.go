@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/DavidAFox/Chat/clientdata"
-	"github.com/DavidAFox/Chat/connections"
-	"github.com/DavidAFox/Chat/message"
-	"github.com/DavidAFox/Chat/room"
 	"io"
 	"log"
 	"sync"
+
+	"github.com/shantanu1995/testmultiroom/clientdata"
+	"github.com/shantanu1995/testmultiroom/connections"
+	"github.com/shantanu1995/testmultiroom/message"
+	"github.com/shantanu1995/testmultiroom/room"
 )
 
 const TEXT_MESSAGE = 1

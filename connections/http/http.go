@@ -8,18 +8,19 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
-	"github.com/DavidAFox/Chat/clientdata"
-	"github.com/DavidAFox/Chat/connections"
-	"github.com/DavidAFox/Chat/connections/websocket"
-	"github.com/DavidAFox/Chat/message"
-	"github.com/DavidAFox/Chat/room"
-	gorilla "github.com/gorilla/websocket"
 	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	gorilla "github.com/gorilla/websocket"
+	"github.com/shantanu1995/testmultiroom/clientdata"
+	"github.com/shantanu1995/testmultiroom/connections"
+	"github.com/shantanu1995/testmultiroom/connections/websocket"
+	"github.com/shantanu1995/testmultiroom/message"
+	"github.com/shantanu1995/testmultiroom/room"
 )
 
 //Connection is used to pass information between the client and the client object.

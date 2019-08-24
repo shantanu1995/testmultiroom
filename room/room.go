@@ -3,9 +3,10 @@ package room
 import (
 	"container/list"
 	"fmt"
-	"github.com/DavidAFox/Chat/message"
 	"sort"
 	"sync"
+
+	"github.com/shantanu1995/testmultiroom/message"
 )
 
 //Client interface for working with the Room type.

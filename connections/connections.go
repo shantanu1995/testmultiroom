@@ -1,7 +1,7 @@
 package connections
 
 import (
-	"github.com/DavidAFox/Chat/message"
+	"github.com/shantanu1995/testmultiroom/message"
 )
 
 type Client interface {

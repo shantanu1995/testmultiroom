@@ -2,7 +2,8 @@ package testclientdata
 
 import (
 	"container/list"
-	"github.com/DavidAFox/Chat/clientdata"
+
+	"github.com/shantanu1995/testmultiroom/clientdata"
 )
 
 type TestData struct {

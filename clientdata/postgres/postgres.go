@@ -5,10 +5,11 @@ package postgres
 import (
 	"database/sql"
 	"fmt"
-	"github.com/DavidAFox/Chat/clientdata"
-	_ "github.com/lib/pq"
 	"log"
 	"strconv"
+
+	_ "github.com/lib/pq"
+	"github.com/shantanu1995/testmultiroom/clientdata"
 )
 
 //NewFactory creates a new clientdata factory using a postgres datastore.
