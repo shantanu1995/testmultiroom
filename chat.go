@@ -235,7 +235,7 @@ func (nl NoLog) Close() error {
 }
 
 func main() {
-	loc := flag.String("config", "Config", "the location of the config file")
+	loc := flag.String("config", "SampleConfig", "the location of the config file")
 	flag.Parse()
 	c := configure(*loc)
 	rooms := room.NewRoomList(c.MaxRooms)

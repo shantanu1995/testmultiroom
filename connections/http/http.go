@@ -201,10 +201,15 @@ type Response struct {
 	Data   interface{}
 	String string
 }
+type TakeInput struct {
+	Username string
+	Password string
+}
 
 //Register is used to create new accounts through the http api.  It expects a login object in the body representing the account to be created.
 func (h *RoomHandler) Register(w http.ResponseWriter, rq *http.Request) {
-	l := make([]string, 0, 0)
+	//l := make([]string, 0, 0)
+	var l TakeInput
 	if rq.Method != "POST" {
 		w.Header().Set("success", "false")
 		w.Header().Set("code", "60")
@@ -218,14 +223,14 @@ func (h *RoomHandler) Register(w http.ResponseWriter, rq *http.Request) {
 		return
 	}
 	dec := json.NewDecoder(rq.Body)
-	err := dec.Decode(&l)
+	err := dec.Decode(l)
 	if err != nil {
 		log.Println("Error decoding in Register: ", err)
 	}
 	if len(l) < 2 {
 		log.Println("not enough args in Register")
 	}
-	if !clientdata.ValidateName(l[0]) {
+	if !clientdata.ValidateName(l.Username) {
 		w.Header().Set("success", "false")
 		w.Header().Set("code", "20")
 		enc := json.NewEncoder(w)
@@ -235,8 +240,8 @@ func (h *RoomHandler) Register(w http.ResponseWriter, rq *http.Request) {
 		}
 		return
 	}
-	data := h.datafactory.Create(l[0])
-	err = data.NewClient(l[1])
+	data := h.datafactory.Create(l.Username)
+	err = data.NewClient(l.Password)
 	switch {
 	case err == clientdata.ErrClientExists:
 		w.Header().Set("success", "false")
