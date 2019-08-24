@@ -269,18 +269,18 @@ func (h *RoomHandler) Register(w http.ResponseWriter, rq *http.Request) {
 //Login takes a login(name, password) from the rq body and tries to log the client in.  It will return a response with header "success" = "true" if the login is successful.
 func (h *RoomHandler) Login(w http.ResponseWriter, rq *http.Request) {
 	var success bool
-	l := make([]string, 0, 0)
+	var l TakeInput
 	dec := json.NewDecoder(rq.Body)
-	err := dec.Decode(&l)
+	err := dec.Decode(l)
 	if err != nil {
 		ServerError(w, err)
 		return
 	}
-	if len(l) < 2 {
+	if l.Username == "" {
 		log.Println("Not enough args in login")
 		return
 	}
-	if !clientdata.ValidateName(l[0]) {
+	if !clientdata.ValidateName(l.Username) {
 		w.Header().Set("success", "false")
 		w.Header().Set("code", "20")
 		enc := json.NewEncoder(w)
@@ -290,15 +290,15 @@ func (h *RoomHandler) Login(w http.ResponseWriter, rq *http.Request) {
 		}
 		return
 	}
-	data := h.datafactory.Create(l[0])
-	success, err = data.Authenticate(l[1])
+	data := h.datafactory.Create(l.Username)
+	success, err = data.Authenticate(l.Password)
 	if err != nil {
 		ServerError(w, err)
 		return
 	}
 	enc := json.NewEncoder(w)
 	if success {
-		if h.rooms.GetClient(l[0]) != nil {
+		if h.rooms.GetClient(l.Username) != nil {
 			w.Header().Set("success", "false")
 			w.Header().Set("code", "21")
 			err = enc.Encode("That user is already logged in.")
@@ -308,7 +308,7 @@ func (h *RoomHandler) Login(w http.ResponseWriter, rq *http.Request) {
 			return
 		}
 		w.Header().Set("success", "true")
-		c := h.New(h.clients, l[0], h.rooms, h.chl, data)
+		c := h.New(h.clients, l.Username, h.rooms, h.chl, data)
 		c.cMap.Add(c)
 		err = enc.Encode(c.token)
 		if err != nil {
