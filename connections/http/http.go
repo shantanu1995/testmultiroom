@@ -202,8 +202,8 @@ type Response struct {
 	String string
 }
 type TakeInput struct {
-	Username string
-	Password string
+	Username string `bson:"username" json:"username"`
+	Password string `bson:"password" json:"password"`
 }
 
 //Register is used to create new accounts through the http api.  It expects a login object in the body representing the account to be created.
