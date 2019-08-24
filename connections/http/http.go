@@ -227,7 +227,7 @@ func (h *RoomHandler) Register(w http.ResponseWriter, rq *http.Request) {
 	if err != nil {
 		log.Println("Error decoding in Register: ", err)
 	}
-	if len(l) < 2 {
+	if l.Username == "" {
 		log.Println("not enough args in Register")
 	}
 	if !clientdata.ValidateName(l.Username) {
