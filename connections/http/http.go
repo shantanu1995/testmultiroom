@@ -223,7 +223,7 @@ func (h *RoomHandler) Register(w http.ResponseWriter, rq *http.Request) {
 		return
 	}
 	dec := json.NewDecoder(rq.Body)
-	err := dec.Decode(l)
+	err := dec.Decode(&l)
 	if err != nil {
 		log.Println("Error decoding in Register: ", err)
 	}
@@ -271,7 +271,7 @@ func (h *RoomHandler) Login(w http.ResponseWriter, rq *http.Request) {
 	var success bool
 	var l TakeInput
 	dec := json.NewDecoder(rq.Body)
-	err := dec.Decode(l)
+	err := dec.Decode(&l)
 	if err != nil {
 		ServerError(w, err)
 		return
