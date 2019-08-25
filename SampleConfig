@@ -11,7 +11,7 @@
 "KeyFile":"",
 "LogFile":"ChatLog",
 "DatabaseLogin":"",
-"DatabasePassword":"",
+"DatabasePassword":"admin",
 "DatabaseName":"DataFile",
 "DatabaseType":"",
 "Origin":"",
