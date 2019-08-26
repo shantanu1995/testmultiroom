@@ -13,7 +13,7 @@
 "DatabaseLogin":"",
 "DatabasePassword":"admin",
 "DatabaseName":"DataFile",
-"DatabaseType":"",
+"DatabaseType":"mongo",
 "Origin":"",
 "MaxRooms":100,
 "DisableNewAccounts": false
