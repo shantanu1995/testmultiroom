@@ -142,10 +142,15 @@ func (p *MongoDB) Get(table string, values map[string]string, columns ...string)
 	var input InputAdd
 	var outputstruct []InputAdd
 	var outputvalue []map[string]string
+	var inputvalue map[string]string
+	for _, m := range columns {
+		inputvalue[m] = values[m]
+
+	}
 	input.Username = values["name"]
 	input.Table = table
 	input.Values = values
-	err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values": input.Values}).All(&outputstruct)
+	err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values": inputvalue}).All(&outputstruct)
 	for _, user := range outputstruct {
 		outputvalue = append(outputvalue, user.Values)
 	}
