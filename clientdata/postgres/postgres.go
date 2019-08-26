@@ -8,6 +8,9 @@ import (
 	"log"
 	"strconv"
 
+	mgo "gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
+
 	_ "github.com/lib/pq"
 	"github.com/shantanu1995/testmultiroom/clientdata"
 )
@@ -35,6 +38,14 @@ type Postgres struct {
 	data *sql.DB
 }
 
+type MongoDB struct {
+	data *mgo.Database
+}
+
+const (
+	COLLECTION = "chathistory"
+)
+
 //NewPostgres sets up the connection to the database and returns a Postgres datastore.
 func NewPostgres(databaseLogin, databasePassword, databaseName, databaseIP, databasePort string) (*Postgres, error) {
 	p := new(Postgres)
@@ -47,6 +58,39 @@ func NewPostgres(databaseLogin, databasePassword, databaseName, databaseIP, data
 	database, err := sql.Open("postgres", fmt.Sprintf("user=%v password=%v dbname=%v host=%v port=%v sslmode=disable", databaseLogin, databasePassword, databaseName, databaseIP, databasePort))
 	p.data = database
 	return p, err
+}
+
+func NewMongoDB(databaseLogin, databasePassword, databaseName, databaseIP, databasePort string) (*MongoDB, error) {
+	p := new(MongoDB)
+
+	if databaseIP == "" {
+		databaseIP = "localhost"
+
+	}
+	if databaseName == "" {
+		databaseName = "srti"
+	}
+	database, err := mgo.Dial(databaseIP)
+	p.data = database.DB(databaseName)
+
+	return p, err
+
+}
+
+type InputAdd struct {
+	Username string            `bson:"Username" json:"Username"`
+	Table    string            `bson:"Table" json:"Table"`
+	Values   map[string]string `bson:"Values" json:"Values"`
+}
+
+// Add adds row values to mongoDB
+func (p *MongoDB) Add(table string, values map[string]string) error {
+	var input InputAdd
+	input.Username = values["name"]
+	input.Table = table
+	input.Values = values
+	err := p.data.C(COLLECTION).Insert(&input)
+	return err
 }
 
 //Add adds row values to table.
@@ -68,6 +112,15 @@ func (p *Postgres) Add(table string, values map[string]string) error {
 	return err
 }
 
+func (p *MongoDB) Delete(table string, values map[string]string) error {
+	var input InputAdd
+	input.Username = values["name"]
+	input.Table = table
+	input.Values = values
+	err := p.data.C(COLLECTION).Remove(&input)
+	return err
+}
+
 //Delete removes rows matching values from table.
 func (p *Postgres) Delete(table string, values map[string]string) error {
 	qstring := "DELETE FROM " + table + " WHERE "
@@ -83,6 +136,20 @@ func (p *Postgres) Delete(table string, values map[string]string) error {
 	}
 	_, err := p.data.Exec(qstring, args...)
 	return err
+}
+
+func (p *MongoDB) Get(table string, values map[string]string, columns ...string) ([]map[string]string, error) {
+	var input InputAdd
+	var outputstruct []InputAdd
+	var outputvalue []map[string]string
+	input.Username = values["name"]
+	input.Table = table
+	input.Values = values
+	err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values": input.Values}).All(&outputstruct)
+	for _, user := range outputstruct {
+		outputvalue = append(outputvalue, user.Values)
+	}
+	return outputvalue, err
 }
 
 //Get gets teh columns from the table for the rows matching values.
@@ -137,6 +204,15 @@ func (p *Postgres) Get(table string, values map[string]string, columns ...string
 	return m, nil
 }
 
+func (p *MongoDB) Set(table string, values, cond map[string]string) error {
+	var input InputAdd
+	input.Username = values["name"]
+	input.Table = table
+	input.Values = values
+	err := p.data.C(COLLECTION).Update(bson.M{"Username": input.Username, "Table": input.Table, "Values": cond}, bson.M{"$set": bson.M{"Values": values}})
+	return err
+}
+
 //Set finds a row matching cond in table and sets the column/value pairs in values.
 func (p *Postgres) Set(table string, values, cond map[string]string) error {
 	qstring := "UPDATE " + table + " SET "
@@ -163,6 +239,24 @@ func (p *Postgres) Set(table string, values, cond map[string]string) error {
 	args = append(args, args2...)
 	_, err := p.data.Exec(qstring, args...)
 	return err
+}
+func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
+	var input InputAdd
+	input.Username = values["name"]
+	input.Table = table
+	input.Values = values
+	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values": input.Values}).Count()
+	if err != nil {
+		log.Println(err)
+	}
+	switch {
+	case err != nil:
+		return false, err
+	case count == 0:
+		return false, err
+	default:
+		return true, nil
+	}
 }
 
 //Exists takes a table to check and a map representing a row to compare to and returns true if there is a match in the database.

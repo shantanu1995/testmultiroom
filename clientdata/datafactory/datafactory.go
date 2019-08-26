@@ -12,6 +12,9 @@ func New(kind, databaseLogin, databasePassword, databaseName, databaseIP, databa
 	if kind == "postgres" {
 		data, err := postgres.NewPostgres(databaseLogin, databasePassword, databaseName, databaseIP, databasePort)
 		return NewDataFactory(data, disableNewAccounts), err
+	} else if kind == "mongo" {
+		data, err := postgres.NewMongoDB(databaseLogin, databasePassword, databaseName, databaseIP, databasePort)
+		return NewDataFactory(data, disableNewAccounts), err
 	}
 	return NewDataFactory(filedata.NewFileData(databaseName), disableNewAccounts), nil
 }
