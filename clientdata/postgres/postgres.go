@@ -142,7 +142,9 @@ func (p *MongoDB) Get(table string, values map[string]string, columns ...string)
 	var input InputAdd
 	var outputstruct []InputAdd
 	var outputvalue []map[string]string
+
 	var inputvalue map[string]string
+	inputvalue = make(map[string]string, 0)
 	for _, m := range columns {
 		inputvalue[m] = values[m]
 		log.Println("Key" + m + "Value" + values[m])
