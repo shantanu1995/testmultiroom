@@ -145,6 +145,7 @@ func (p *MongoDB) Get(table string, values map[string]string, columns ...string)
 	var inputvalue map[string]string
 	for _, m := range columns {
 		inputvalue[m] = values[m]
+		fmt.Println("Key" + m + "Value" + values[m])
 
 	}
 	input.Username = values["name"]
