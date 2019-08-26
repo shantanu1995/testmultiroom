@@ -4,8 +4,6 @@ import (
 	"errors"
 	"log"
 	"time"
-
-	"github.com/shantanu1995/testmultiroom/room"
 )
 
 var ERR_MAX_ROOMS = errors.New("Can't create room.  There are already the maximum number of rooms.")
@@ -33,7 +31,7 @@ func NewRoomList(maxRooms int) *RoomList {
 }
 
 //FindRoom returns the first room with name.
-func (rml *RoomList) FindRoom(name string) *room.Room {
+func (rml *RoomList) FindRoom(name string) *Room {
 	for i := rml.Front(); i != nil; i = i.Next() {
 		if i.Value.(*Room).Name() == name {
 			return i.Value.(*Room)
