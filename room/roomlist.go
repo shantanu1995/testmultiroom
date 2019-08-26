@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/DavidAFox/Chat/room"
+	"github.com/shantanu1995/testmultiroom/room"
 )
 
 var ERR_MAX_ROOMS = errors.New("Can't create room.  There are already the maximum number of rooms.")
