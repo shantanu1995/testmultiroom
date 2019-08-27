@@ -259,7 +259,19 @@ func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
 		result[k] = v
 	}
 	log.Println(result)*/
-	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values.name": input.Username}).Count()
+	var filter string
+	var i = 0
+	for k, v := range values {
+		if i > 0 {
+			filter += ","
+		}
+		filter += fmt.Sprintf("Values.%s:", k)
+		filter += v
+		i++
+	}
+	log.Println(filter)
+
+	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, filter}).Count()
 	if err != nil {
 		log.Println(err)
 	}
