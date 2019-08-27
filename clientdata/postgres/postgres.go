@@ -259,7 +259,7 @@ func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
 		result[k] = v
 	}
 	log.Println(result)*/
-	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table}).Count()
+	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values": bson.M{"$elemMatch": bson.M{"name": input.Username}}}).Count()
 	if err != nil {
 		log.Println(err)
 	}
