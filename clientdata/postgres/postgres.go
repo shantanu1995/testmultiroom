@@ -250,15 +250,16 @@ func (p *Postgres) Set(table string, values, cond map[string]string) error {
 }
 func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
 	var input InputAdd
-	input.Username = values["name"]
-	input.Table = table
-	input.Values = values
-	log.Println(input.Values)
+	query := bson.M{}
+	//input.Username = values["name"]
+	//input.Table = table
+	//input.Values = values
+	//log.Println(input.Values)
 	/*result := make(bson.M, len(values))
 	for k, v := range values {
 		result[k] = v
 	}
-	log.Println(result)*/
+	log.Println(result)
 	var filter string
 	var i = 0
 	for k, v := range values {
@@ -269,9 +270,17 @@ func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
 		filter += v
 		i++
 	}
-	log.Println(filter)
+	log.Println(filter)*/
+	query["Username"] = input.Username
+	query["Table"] = input.Table
+	for k, v := range values {
 
-	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values": filter}).Count()
+		filter := fmt.Sprintf("Values.%s:", k)
+		query[filter] = v
+
+	}
+
+	count, err := p.data.C(COLLECTION).Find(query).Count()
 	if err != nil {
 		log.Println(err)
 	}
