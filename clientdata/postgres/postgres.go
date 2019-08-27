@@ -271,11 +271,11 @@ func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
 		i++
 	}
 	log.Println(filter)*/
-	query["Username"] = input.Username
-	query["Table"] = input.Table
+	query["Username"] = values["name"]
+	query["Table"] = table
 	for k, v := range values {
 
-		filter := fmt.Sprintf("Values.%s:", k)
+		filter := fmt.Sprintf("Values.%s", k)
 		query[filter] = v
 
 	}
