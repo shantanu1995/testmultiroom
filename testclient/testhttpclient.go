@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"testing"
@@ -180,7 +181,7 @@ func (cl *HTTPClient) UnBlock(name string) {
 }
 
 type whoData struct {
-	Room string
+	Room    string
 	Clients []string
 }
 
@@ -285,12 +286,13 @@ func (cl *HTTPClient) GetMessages() {
 		if time.Now().Sub(start) > 10*time.Second {
 			cl.CheckResponse()
 		}
+		log.Println(cl.messages)
 	}
 }
 
 //CheckResponse compares the clients messages recieved to those expected by its Results object and fails the test if they don't match.  It also panics to short circuit long tests when it goes out of sync.
 func (cl *HTTPClient) CheckResponse() {
-//	cl.GetMessages()
+	//	cl.GetMessages()
 	for i := range cl.messages {
 		cl.messages[i] = RemoveTime(cl.messages[i])
 	}
