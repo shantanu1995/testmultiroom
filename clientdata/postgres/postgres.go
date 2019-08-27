@@ -217,7 +217,23 @@ func (p *MongoDB) Set(table string, values, cond map[string]string) error {
 	input.Username = values["name"]
 	input.Table = table
 	input.Values = values
-	err := p.data.C(COLLECTION).Update(bson.M{"Username": input.Username, "Table": input.Table, "Values": cond}, bson.M{"$set": bson.M{"Values": values}})
+	query := bson.M{}
+	query1 := bson.M{}
+	query["Username"] = values["name"]
+	query["Table"] = table
+	for k, v := range cond {
+
+		filter := fmt.Sprintf("Values.%s", k)
+		query[filter] = v
+
+	}
+	for k, v := range values {
+
+		filter := fmt.Sprintf("Values.%s", k)
+		query1[filter] = v
+
+	}
+	err := p.data.C(COLLECTION).Update(query, bson.M{"$set": query1})
 	return err
 }
 
