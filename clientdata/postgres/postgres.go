@@ -279,7 +279,7 @@ func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
 		query[filter] = v
 
 	}
-
+	log.Println(query)
 	count, err := p.data.C(COLLECTION).Find(query).Count()
 	if err != nil {
 		log.Println(err)
