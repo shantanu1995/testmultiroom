@@ -271,7 +271,7 @@ func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
 	}
 	log.Println(filter)
 
-	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, filter}).Count()
+	count, err := p.data.C(COLLECTION).Find(bson.M{"Username": input.Username, "Table": input.Table, "Values": filter}).Count()
 	if err != nil {
 		log.Println(err)
 	}
