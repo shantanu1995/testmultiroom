@@ -249,7 +249,7 @@ func (p *Postgres) Set(table string, values, cond map[string]string) error {
 	return err
 }
 func (p *MongoDB) Exists(table string, values map[string]string) (bool, error) {
-	var input InputAdd
+	//var input InputAdd
 	query := bson.M{}
 	//input.Username = values["name"]
 	//input.Table = table
