@@ -282,11 +282,12 @@ func (cl *HTTPClient) GetMessages() {
 			cl.test.Errorf("HTTP GetMessages() Error decoding messages: %v", err)
 		}
 		resp.Body.Close()
+		log.Println(messages)
 		cl.messages = append(cl.messages, messages...)
 		if time.Now().Sub(start) > 10*time.Second {
 			cl.CheckResponse()
 		}
-		log.Println(cl.messages)
+
 	}
 }
 

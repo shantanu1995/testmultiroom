@@ -366,6 +366,7 @@ func (cl *Connection) GetMessages(w http.ResponseWriter, rq *http.Request) {
 	}
 	cl.messages.Unlock()
 	w.Header().Set("success", "true")
+	log.Println(m)
 	enc := json.NewEncoder(w)
 	err := enc.Encode(m)
 	if err != nil {
